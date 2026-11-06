@@ -53,7 +53,8 @@ Para cada resposta, o prompt devolve um JSON com:
 
 - **A v1 não tinha a categoria "misto".** Respostas com pontos positivos e negativos (por exemplo, "prático, mas sinto culpa depois") eram impossíveis de acertar. Parte da melhora da v2 veio de corrigir o esquema de categorias, não de o modelo ficar "mais inteligente".
 - **A v2 passou a usar "misto" em excesso** em respostas que eram claramente negativas. Isso mostra que cada correção pode criar um erro novo e que testar sempre com um gabarito próprio é essencial.
-- Definir regras claras para os casos de fronteira (o que conta como "misto"?) é tão importante quanto escrever o prompt.
+- Definir regras claras para os casos de fronteira (o que conta como "misto"?) é tão importante quanto escrever o prompt/
+- **A v2 melhorou o sentimento** (ganhou a categoria "misto"), mas piorou levemente a posição na pergunta 4, porque a regra de "depende" ficou ampla demais. Corrigir uma parte do prompt pode quebrar outra, e só o gabarito manual revela isso.
 
 ## Limitações
 
