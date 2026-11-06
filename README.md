@@ -14,7 +14,7 @@ Questionário com 4 perguntas abertas:
 3. O que as redes de fast food poderiam fazer para conquistar mais a sua confiança em relação à qualidade e à saúde de seus produtos?
 4. O que significa, para você, uma rede de fast food ser "saudável"? Isso é possível?
 
-O formulário foi pensado para divulgação em grupos de WhatsApp. Nesta etapa de testes, usei **80 respostas fictícias** geradas por IA (20 por pergunta), com variação de tom, tamanho e erros de digitação, mais 3 respostas inválidas inseridas de propósito.
+O formulário foi divulgado em grupos de WhatsApp e tem 27 perguntas, das quais 4 são abertas (as acima) e as demais são de múltipla escolha (perfil, hábitos de consumo, percepções). Apenas as 4 abertas passam pela IA. Para avaliar os prompts, usei **80 respostas fictícias** geradas por IA (20 por pergunta), com variação de tom, tamanho e erros de digitação, mais 3 respostas inválidas inseridas de propósito. O fluxo automatizado foi testado com **2 respostas reais**.
 
 ## O que a IA faz
 
@@ -58,24 +58,40 @@ Para cada resposta, o prompt devolve um JSON com:
 
 ## Limitações
 
-- Os testes usaram **dados fictícios**, que tendem a ser mais "certinhos" que respostas reais. As conclusões sobre a Geração Z devem vir de dados reais coletados com a pesquisa.
+- A avaliação dos prompts usou dados fictícios, que tendem a ser mais "certinhos" que respostas reais. As conclusões sobre a Geração Z devem vir de dados reais.
 - O gabarito tem **apenas 10 respostas por campo**, então as porcentagens são indicativas, não estatísticas.
 - Ajustei o prompt vendo as mesmas respostas usadas no teste, o que pode deixar a nota da v2 otimista.
 - A amostra real, quando coletada por WhatsApp, será de conveniência e não representará toda a Geração Z.
 - A v2.1 foi ajustada a partir dos erros nas mesmas 10 respostas usadas para medi-la, então o resultado de 100% provavelmente está otimista. O teste confiável será com as respostas reais da pesquisa.
+- Os resultados de acurácia foram medidos no Claude. O fluxo automatizado usa outro modelo (gpt-oss-120b via Groq), cuja acurácia ainda não foi medida com o mesmo gabarito.
+- O fluxo foi testado com apenas 2 respostas reais.
+
+## Automação
+
+Fluxo que classifica cada nova resposta da pesquisa:
+
+1. Captura de novas respostas (Google Forms → Google Sheets)
+2. Verificação de consentimento (só segue quem concordou)
+3. Estruturação das 4 respostas abertas de cada pessoa, sem dados demográficos
+4. Classificação por IA (gpt-oss-120b via Groq, temperatura 0)
+5. Normalização do JSON em linhas
+6. Registro na aba "Classificação" da planilha
+
+Arquivo do fluxo: `n8n/triagem_workflow.json`
 
 ## Estrutura do repositório
 
 - `prompts/`: versões do prompt de classificação (v1, v2, ...)
 - `resultados/`: saídas em JSON de cada versão
 - `dados/`: respostas fictícias de entrada e o gabarito manual
+- `n8n/`: fluxo de automação exportado
 
 ## Próximos passos
 
-- Automatizar o fluxo com n8n (Google Forms, classificação por IA, planilha)
-- Criar um dashboard com os resultados
-- Aplicar o classificador às respostas reais da pesquisa
+- Coletar mais respostas reais e medir o tempo economizado pelo fluxo
+- Criar um dashboard com os resultados agregados
+- Medir a acurácia do modelo do fluxo com o gabarito manual
 
 ## Ferramentas
 
-Claude (Anthropic), Google Forms, Google Sheets, GitHub
+Claude (Anthropic), n8n, Groq, Google Forms, Google Sheets, GitHub
